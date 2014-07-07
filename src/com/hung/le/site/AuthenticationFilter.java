@@ -44,9 +44,11 @@ public class AuthenticationFilter implements Filter{
 		final Principal principal = UserPrincipal.getPrincipal(session);
 		
 		if(principal == null){
+			log.info("PRINCIPLE IS NULL");
 			((HttpServletResponse) response).sendRedirect(((HttpServletRequest) request).getContextPath() + "/login");
 		}
 		else{
+			log.info("PRINCIPLE IS NOT NULL");
 			chain.doFilter(
                     new HttpServletRequestWrapper((HttpServletRequest)request){
                         @Override

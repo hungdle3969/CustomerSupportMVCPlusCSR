@@ -1,9 +1,21 @@
 package com.hung.le.site;
 
+import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlSchemaType;
+
+import com.hung.le.site.validation.NotBlank;
+
+@XmlRootElement(name="attachment")
 public class Attachment {
 
+	@NotBlank(message = "{validate.attachment.name}")
 	private String name;
+	
+	@Size(min = 1, message = "{validate.attachment.contents}")
 	private byte[] contents;
+	
+	@NotBlank(message = "{validate.attachment.mimeContentType}")
 	private String mimeContentType;
 	
 	
@@ -19,6 +31,7 @@ public class Attachment {
 	public void setName(String name) {
 		this.name = name;
 	}
+	@XmlSchemaType(name = "base64Binary")
 	public byte[] getContents() {
 		return contents;
 	}

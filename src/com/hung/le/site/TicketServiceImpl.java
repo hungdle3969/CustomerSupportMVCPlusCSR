@@ -36,4 +36,10 @@ public class TicketServiceImpl implements TicketService{
 		}
 	}
 
+	@Override
+	public void deleteTicket(long id) {
+
+		this.ticketRepository.delete(id);
+	}
+
 }

@@ -1,17 +1,20 @@
 <%--@elvariable id="ticketDatabase" type="java.util.Map<Integer, com.hung.le.site.Ticket>" --%>
-<template:basic htmlTitle="Tickets" bodyTitle="Tickets">
+
+<spring:message code="title.ticketList" var="listTitle" />
+<template:basic htmlTitle="${listTitle }" bodyTitle="${listTitle }">
 	<c:choose>
 		<c:when test="${fn:length(tickets) == 0 }">
-			<i>There are no tickets in the system.</i>
+			<i><spring:message code="message.ticketList.none" /></i>
 		</c:when>
 		<c:otherwise>
 			<c:forEach items="${tickets}" var="ticket">
-				Ticket ${ticket.id}:
+				<spring:message code="message.ticketList.ticket" />&nbsp;${ticket.id}:
 				<a href="<c:url value="/ticket/view/${ticket.id}" />">
 				<c:out value="${formatDate:abbreviateString(ticket.subject, 60)}"/>
 				</a><br />
-				<c:out value="${ticket.customerName }" /> created ticket
-				<wrox:formatDate value="${ticket.dateCreated}" type="both"
+				<c:out value="${ticket.customerName }" />&nbsp;
+				<spring:message code="message.ticketList.created" />&nbsp;
+				<formatDate:formatDate value="${ticket.dateCreated}" type="both"
                                  timeStyle="short" dateStyle="medium" /><br />
                 <br />
 			</c:forEach>

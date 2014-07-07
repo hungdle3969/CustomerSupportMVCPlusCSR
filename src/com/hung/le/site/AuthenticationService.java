@@ -2,7 +2,13 @@ package com.hung.le.site;
 
 import java.security.Principal;
 
+import org.springframework.validation.annotation.Validated;
+
+import com.hung.le.site.validation.NotBlank;
+
+@Validated
 public interface AuthenticationService {
 
-	Principal authenticate(String username, String password);
+	Principal authenticate(@NotBlank(message = "{validate.authenticate.username}") String username, 
+			@NotBlank(message = "{validate.authenticate.password}") String password);
 }

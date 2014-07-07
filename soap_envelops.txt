@@ -1,0 +1,78 @@
+Use RestClient plug-in
+
+{
+	"subject":"system failed", 
+	"body":"this is a test", 
+	"attachments":{
+		"name":"file3",
+		"contents":"test3",
+		"mimeContentType":"json"
+	}
+}
+
+<ticket>
+       <customerName>John Doe</customerName>
+       <dateCreated>2014-01-17T12:36:00Z</dateCreated>
+       <subject>Foo</subject>
+       <body>Bar</body>
+       <attachment>
+           <name>spacer.gif</name>
+           <mimeContentType>image/gif</mimeContentType>
+           <contents>R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==</contents>
+       </attachment>
+</ticket>
+
+{
+  "shipping_address": {
+    "street_address": "1600 Pennsylvania Avenue NW",
+    "city": "Washington",
+    "state": "DC"
+  },
+  "billing_address": {
+    "street_address": "1st Street SE",
+    "city": "Washington",
+    "state": "DC"
+  }
+}
+**************************************
+POST
+http://localhost:8080/CustomerSupportMVCPlusCSR/services/Soap/
+<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope">
+     <soap:Header/>
+     <soap:Body>
+       <CustomerSupport:ticketsRequest xmlns:CustomerSupport="http://companyname.com/xmlns/CustomerSupport"/>
+     </soap:Body>
+</soap:Envelope>
+
+<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope">
+     <soap:Header/>
+     <soap:Body>
+       <CustomerSupport:ticketRequest xmlns:CustomerSupport="http://companyname.com/xmlns/CustomerSupport">
+            <id>3</id>
+       </CustomerSupport:ticketRequest>
+	</soap:Body>
+</soap:Envelope>
+
+<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope">
+     <soap:Header/>
+     <soap:Body>
+       <CustomerSupport:deleteTicket xmlns:CustomerSupport="http://companyname.com/xmlns/CustomerSupport">
+            <id>2</id>
+       </CustomerSupport:deleteTicket>
+	</soap:Body>
+</soap:Envelope>
+   
+<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope">
+     <soap:Header/>
+     <soap:Body>
+       <CustomerSupport:createTicket xmlns:CustomerSupport="http://companyname.com/xmlns/CustomerSupport">
+            <subject>Foo</subject>
+            <body>Bar</body>
+            <attachment>
+               <name>spacer.gif</name>
+               <mimeContentType>image/gif</mimeContentType>
+               <contents>R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==</contents>
+             </attachment>
+       </CustomerSupport:createTicket>
+     </soap:Body>
+</soap:Envelope>

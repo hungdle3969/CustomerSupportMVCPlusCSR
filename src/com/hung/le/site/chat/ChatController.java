@@ -12,10 +12,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.hung.le.config.annotation.WebController;
+
 /*
  * This controller replaces ChatServlet
  */
-@Controller
+@WebController
 @RequestMapping("chat")
 public class ChatController {
 	

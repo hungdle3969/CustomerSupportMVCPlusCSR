@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class TicketRepositoryImpl implements TicketRepository {
 
-	private volatile long TICKET_ID_SEQUENCE = 1;
+	private volatile long TICKET_ID_SEQUENCE = 1L;
 	
 	private Map<Long, Ticket> ticketDatabase = new LinkedHashMap<>();
 
@@ -39,6 +39,12 @@ public class TicketRepositoryImpl implements TicketRepository {
 	
 	private synchronized long getNextTicketId(){
 		return this.TICKET_ID_SEQUENCE++;
+	}
+
+	@Override
+	public void delete(long id) {
+		this.ticketDatabase.remove(id);
+		
 	}
 	
 	

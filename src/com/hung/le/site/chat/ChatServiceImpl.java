@@ -34,7 +34,8 @@ public class ChatServiceImpl implements ChatService{
         message.setUser(user);
         message.setTimestamp(Instant.now());
         message.setType(ChatMessage.Type.STARTED);
-        message.setContent(user + " started the chat session.");
+        message.setContentCode("message.chat.started.session");
+        message.setContentArguments(user);
 
         ChatSession session = new ChatSession();
         session.setSessionId(this.getNextSessionId());
@@ -63,7 +64,8 @@ public class ChatServiceImpl implements ChatService{
         message.setUser(user);
         message.setTimestamp(Instant.now());
         message.setType(ChatMessage.Type.JOINED);
-        message.setContent(user + " joined the chat session.");
+        message.setContentArguments(user);
+        message.setContentCode("message.chat.joined.session");
         this.logMessage(session, message);
 
         return new JoinResult(session, message);
@@ -84,11 +86,11 @@ public class ChatServiceImpl implements ChatService{
             message.setType(ChatMessage.Type.ERROR);
         message.setType(ChatMessage.Type.LEFT);
         if(reason == ReasonForLeaving.ERROR)
-            message.setContent(user + " left the chat due to an error.");
+        	message.setContentCode("message.chat.left.chat.error");
         else if(reason == ReasonForLeaving.LOGGED_OUT)
-            message.setContent(user + " logged out.");
+        	message.setContentCode("message.chat.logged.out");
         else
-            message.setContent(user + " left the chat.");
+            message.setContentCode("message.chat.left.chat.normal");
         this.logMessage(session, message);
 
         List<ChatMessage> chatLog = this.chatLogs.remove(id);

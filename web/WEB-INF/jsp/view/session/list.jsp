@@ -2,12 +2,16 @@
 <%--@elvariable id="numberOfSessions" type="int"--%>
 <%--@elvariable id="sessionList" type="java.util.List<javax.servlet.http.HttpSession>"--%>
 
-<template:basic htmlTitle="Active Sessions" bodyTitle="Active Sessions">
-	There are a total of ${numberOfSessions} active sessions in this application.<br /><br />
+<spring:message code="title.sessionList" var="sessionTitle" />
+<template:basic htmlTitle="${sessionTitle }" bodyTitle="${sessionTitle }">
+	<spring:message code="message.sessionList.instruction" >
+		<spring:argument value="${numberOfSessions}" />
+	</spring:message><br /><br />
 	<c:forEach items="${sessionList}" var="s">
 		<c:out value="${s.id} - ${s.getAttribute('com.hung.le.user.principal')}"></c:out>
-		<c:if test="${s.id == pageContext.session.id}">&nbsp;(you)</c:if>
-        &nbsp;- last active
+		<c:if test="${s.id == pageContext.session.id}">
+		(<spring:message code="message.sessionList.you" />)</c:if>
+		- <spring:message code="message.sessionList.lastActive" />
         ${formatDate:timeIntervalToString(timestamp - s.lastAccessedTime)} ago<br />
     </c:forEach>
 </template:basic>

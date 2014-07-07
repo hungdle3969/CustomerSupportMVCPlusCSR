@@ -6,10 +6,14 @@ import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
+import javax.validation.ConstraintViolationException;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -18,11 +22,14 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.view.RedirectView;
 
+import com.hung.le.config.annotation.WebController;
+import com.hung.le.site.validation.NotBlank;
+
 
 /*
  * This controller replaces TicketServlet. Controller uses @RequestMapping to control execution of the doGet and doPost methods
  */
-@Controller
+@WebController
 @RequestMapping("ticket")
 public class TicketController {
 
@@ -34,7 +41,7 @@ public class TicketController {
 	public String list(Map<String, Object> model){
 		
 		log.info("Listing tickets.");
-		model.put("tickets",	this.ticketService.getAllTickets());
+		model.put("tickets", this.ticketService.getAllTickets());
 		
 		return "ticket/list";
 	}
@@ -85,9 +92,14 @@ public class TicketController {
 	}
 	
 	@RequestMapping(value = "create", method = RequestMethod.POST)
-	public View create(Principal principal, TicketForm ticketForm) throws IOException{
+	public ModelAndView create(Principal principal, @Valid TicketForm ticketForm, 
+						Errors errors, Map<String, Object> model) throws IOException{
 	
 		log.info("Create new ticket - POST. Create Ticket Form has been submited");
+		
+		if(errors.hasErrors())
+			return new ModelAndView("ticket/add");
+		
 		Ticket ticket = new Ticket();
 		ticket.setCustomerName(principal.getName());
 		ticket.setSubject(ticketForm.getSubject());
@@ -107,9 +119,15 @@ public class TicketController {
 			}
 		}
 		
-		this.ticketService.save(ticket);
+		try{
+			this.ticketService.save(ticket);
+		}
+		catch(ConstraintViolationException e){
+			model.put("validationErrors", e.getConstraintViolations());
+			return new ModelAndView("ticket/add");
+		}
 		
-		return new RedirectView("/ticket/view/" + ticket.getId(), true, false);
+		return new ModelAndView(new RedirectView("/ticket/view/" + ticket.getId(), true, false));
 	}
 	
 	private ModelAndView getListRedirectModelAndView(){
@@ -122,8 +140,13 @@ public class TicketController {
 	
 	public static class TicketForm{
 		
+		@NotBlank(message = "{validate.ticket.subject}")
 		private String subject;
+		
+		@NotBlank(message = "{validate.ticket.body}")
 		private String body;
+		
+		@NotNull(message = "{validate.ticket.attachments}")
 		private List<MultipartFile> attachments;
 		
 		public String getSubject() {

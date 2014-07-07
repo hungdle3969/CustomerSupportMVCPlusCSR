@@ -18,6 +18,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 	@Override
 	public Principal authenticate(String username, String password) {
 
+		log.info("authenticationService is invoked");
 		String currentPassword = this.userRepository.getPasswordForUser(username);
 		
 		if(currentPassword == null){

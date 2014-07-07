@@ -4,9 +4,10 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
+import com.hung.le.config.annotation.WebController;
 
 
 /*
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * that different except that Spring MVC patterns are used instead of 
  * HttpServletRequest and HttpServletResponse tools
  */
-@Controller
+@WebController
 @RequestMapping("session")
 public class SessionListController {
 
